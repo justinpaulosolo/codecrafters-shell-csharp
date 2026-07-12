@@ -77,6 +77,7 @@ class Program
                             Arguments = args,
                             UseShellExecute = false,
                         };
+                        Console.WriteLine(splitResult.Length);
 
                         using (Process process = Process.Start(startInfo))
                         {
