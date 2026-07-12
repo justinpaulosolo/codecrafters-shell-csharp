@@ -68,6 +68,7 @@ class Program
                         }
 
                         var args = splitResult[1..];
+                        var argsCount = args.Length;
 
                         ProcessStartInfo startInfo = new ProcessStartInfo
                         {
@@ -78,7 +79,7 @@ class Program
 
                         using (Process process = Process.Start(startInfo))
                         {
-                            Console.WriteLine($"Program was passed {args.Length} args (including program name).");
+                            Console.WriteLine($"Program was passed {argsCount + 1} args (including program name).");
                             Console.WriteLine($"Arg #{0} (program name): {splitResult[0]}");
                             for(int i = 1; i < args.Count(); i++)
                             {
