@@ -34,8 +34,15 @@ class Program
                         try
                         {
                             string fullPath = Path.Combine(directory, type);
+                            bool canExecute = false;
 
-                            if (File.Exists(fullPath))
+                            UnixFileMode mode = File.GetUnixFileMode(fullPath);
+
+                            canExecute = (mode & (UnixFileMode.UserExecute |
+                                                  UnixFileMode.GroupExecute |
+                                                  UnixFileMode.OtherExecute)) != 0;
+
+                            if (File.Exists(fullPath) && canExecute)
                             {
                                 Console.WriteLine($"{type} is {fullPath}");
                                 found = true;
