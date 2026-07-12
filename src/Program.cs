@@ -78,6 +78,7 @@ class Program
 
                         using (Process process = Process.Start(startInfo))
                         {
+                            Console.WriteLine($"Program was passed {args.Length} args (including program name)");
                             process.WaitForExit();
                         }
                     }
