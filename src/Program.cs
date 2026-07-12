@@ -31,42 +31,19 @@ class Program
 
                     foreach(string directory in directories)
                     {
-                        if (string.IsNullOrWhiteSpace(directory)) continue;;
+                        string filePath = Path.Combine(directory, type);
 
-                        try
+                        if (File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
                         {
-                            string fullPath = Path.Combine(directory, type);
-                            bool canExecute = false;
-
-                            // UnixFileMode mode = File.GetUnixFileMode(fullPath);
-
-                            // canExecute = (mode & (UnixFileMode.UserExecute |
-                            //                       UnixFileMode.GroupExecute |
-                            //                       UnixFileMode.OtherExecute)) != 0;
-
-                            using(Process process = new Process())
-                            {
-                                process.StartInfo.FileName = type;
-                                process.StartInfo.Arguments = "";
-                                process.StartInfo.UseShellExecute = true;
-                                process.Start();
-                                canExecute = true;
-                            }
-
-                            if (File.Exists(fullPath) && canExecute)
-                            {
-                                Console.WriteLine($"{type} is {fullPath}");
-                                found = true;
-                                break;
-                            }
+                            Console.WriteLine($"{type} is {filePath}");
                         }
-                        catch(ArgumentException){};
                     }
 
                     if (!found)
                     {
                         Console.WriteLine($"{type} not found", type);
                     }
+                    
                     break;
                 case "echo":
                     var msg = string.Join(" ", splitResult[1..]);
