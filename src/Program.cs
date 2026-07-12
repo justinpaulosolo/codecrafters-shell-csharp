@@ -4,8 +4,10 @@ class Program
     {
         Console.Write("$ ");
 
-        var command = Console.ReadLine();
-
-        Console.WriteLine($"{command}: command not found");
+        while(true)
+        {
+            var command = Console.ReadLine();
+            Console.WriteLine($"{command}: command not found");
+        }
     }
 }
