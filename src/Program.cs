@@ -67,25 +67,22 @@ class Program
                             isExecutable = true;
                         }
 
-                        var argCount = splitResult[1].Count() + 1;
-
-                        var args = splitResult[1..].ToString();
+                        var args = splitResult[1..];
 
                         ProcessStartInfo startInfo = new ProcessStartInfo
                         {
                             FileName = splitResult[0],
-                            Arguments = args,
+                            Arguments = args.ToString(),
                             UseShellExecute = false,
                         };
-                        Console.WriteLine(splitResult.Length);
 
                         using (Process process = Process.Start(startInfo))
                         {
-                            Console.WriteLine($"Program was passed {argCount} args (including program name).");
+                            Console.WriteLine($"Program was passed {args.Count()+1} args (including program name).");
                             Console.WriteLine($"Arg #{0} (program name): splitResult[0]");
-                            for(int i = 1; i < splitResult.Length; i++)
+                            for(int i = 1; i < args.Count(); i++)
                             {
-                                Console.WriteLine($"Arg #{1}: {args}");
+                                Console.WriteLine($"Arg #{1}: {args[i]}");
                             }
                             process.WaitForExit();
                         }
