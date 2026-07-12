@@ -36,11 +36,11 @@ class Program
                             string fullPath = Path.Combine(directory, type);
                             bool canExecute = false;
 
-                            UnixFileMode mode = File.GetUnixFileMode(fullPath);
+                            // UnixFileMode mode = File.GetUnixFileMode(fullPath);
 
-                            canExecute = (mode & (UnixFileMode.UserExecute |
-                                                  UnixFileMode.GroupExecute |
-                                                  UnixFileMode.OtherExecute)) != 0;
+                            // canExecute = (mode & (UnixFileMode.UserExecute |
+                            //                       UnixFileMode.GroupExecute |
+                            //                       UnixFileMode.OtherExecute)) != 0;
 
                             if (File.Exists(fullPath))
                             {
