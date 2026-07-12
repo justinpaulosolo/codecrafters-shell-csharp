@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 class Program
 {
     static void Main()
@@ -42,7 +44,16 @@ class Program
                             //                       UnixFileMode.GroupExecute |
                             //                       UnixFileMode.OtherExecute)) != 0;
 
-                            if (File.Exists(fullPath))
+                            using(Process process = new Process())
+                            {
+                                process.StartInfo.FileName = type;
+                                process.StartInfo.Arguments = "";
+                                process.StartInfo.UseShellExecute = true;
+                                process.Start();
+                                canExecute = true;
+                            }
+
+                            if (File.Exists(fullPath) && canExecute)
                             {
                                 Console.WriteLine($"{type} is {fullPath}");
                                 found = true;
