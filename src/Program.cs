@@ -21,19 +21,26 @@ class Program
                         break;
                     }
 
-                    string? path = Environment.GetEnvironmentVariable("PATH");
-                    char pathSeparator = Path.PathSeparator; 
-                    
-                    string[] paths = path.Split(pathSeparator);
+                    string? pathEnv = Environment.GetEnvironmentVariable("PATH");
 
-                    foreach(string p in paths)
+                    string[] directories = pathEnv!.Split(Path.PathSeparator);
+
+                    foreach(string directory in directories)
                     {
-                        string fullPath = Path.Combine(p, type);
-                        if (File.Exists(fullPath))
+                        if (string.IsNullOrWhiteSpace(directory)) continue;;
+
+                        try
                         {
-                            Console.WriteLine($"type is {path}", p);
-                            break;
+                            string fullPath = Path.Combine(directory, type);
+
+                            if (File.Exists(fullPath))
+                            {
+                                Console.WriteLine($"{type} is {fullPath}");
+                                break;
+                            }
                         }
+                        catch(ArgumentException){};
+
                     }
 
                     Console.WriteLine($"{type} not found", type);
