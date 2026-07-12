@@ -25,6 +25,8 @@ class Program
 
                     string[] directories = pathEnv!.Split(Path.PathSeparator);
 
+                    bool found = false;
+
                     foreach(string directory in directories)
                     {
                         if (string.IsNullOrWhiteSpace(directory)) continue;;
@@ -36,14 +38,17 @@ class Program
                             if (File.Exists(fullPath))
                             {
                                 Console.WriteLine($"{type} is {fullPath}");
+                                found = true;
                                 break;
                             }
                         }
                         catch(ArgumentException){};
-
                     }
 
-                    Console.WriteLine($"{type} not found", type);
+                    if (!found)
+                    {
+                        Console.WriteLine($"{type} not found", type);
+                    }
                     break;
                 case "echo":
                     var msg = string.Join(" ", splitResult[1..]);
