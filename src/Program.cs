@@ -68,6 +68,7 @@ class Program
                         }
 
                         var args = splitResult[1..];
+                        Console.WriteLine(args);
 
                         ProcessStartInfo startInfo = new ProcessStartInfo
                         {
