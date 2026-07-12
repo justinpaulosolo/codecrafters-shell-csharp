@@ -36,6 +36,8 @@ class Program
                         if (File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
                         {
                             Console.WriteLine($"{type} is {filePath}");
+                            found = true;
+                            break;
                         }
                     }
 
@@ -43,7 +45,7 @@ class Program
                     {
                         Console.WriteLine($"{type} not found", type);
                     }
-                    
+
                     break;
                 case "echo":
                     var msg = string.Join(" ", splitResult[1..]);
