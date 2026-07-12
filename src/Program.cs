@@ -79,7 +79,7 @@ class Program
                         using (Process process = Process.Start(startInfo))
                         {
                             Console.WriteLine($"Program was passed {args.Count()+1} args (including program name).");
-                            Console.WriteLine($"Arg #{0} (program name): splitResult[0]");
+                            Console.WriteLine($"Arg #{0} (program name): {splitResult[0]}");
                             for(int i = 1; i < args.Count(); i++)
                             {
                                 Console.WriteLine($"Arg #{i}: {args[i].ToString()}");
