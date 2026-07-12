@@ -9,33 +9,35 @@ class Program
         {
             Console.Write("$ ");
 
-            var command = Console.ReadLine();
-            var splitResult = command!.Split(" ");
+            var userInput = Console.ReadLine();
+            var splitResult = userInput!.Split(" ");
+
+
+            string? pathEnv = Environment.GetEnvironmentVariable("PATH");
+
+            string[] directories = pathEnv!.Split(Path.PathSeparator);
+
 
             switch(splitResult[0])
             {
                 case "type":
-                    var type = string.Join(" ", splitResult[1..]);
+                    var command = string.Join(" ", splitResult[1..]);
 
-                    if (type == "echo" || type =="exit" || type == "type" )
+                    if (command == "echo" || command =="exit" || command == "type" )
                     {
-                        Console.WriteLine($"{type} is a shell builtin", type);
+                        Console.WriteLine($"{command} is a shell builtin", command);
                         break;
                     }
-
-                    string? pathEnv = Environment.GetEnvironmentVariable("PATH");
-
-                    string[] directories = pathEnv!.Split(Path.PathSeparator);
 
                     bool found = false;
 
                     foreach(string directory in directories)
                     {
-                        string filePath = Path.Combine(directory, type);
+                        string filePath = Path.Combine(directory, command);
 
                         if (File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
                         {
-                            Console.WriteLine($"{type} is {filePath}");
+                            Console.WriteLine($"{command} is {filePath}");
                             found = true;
                             break;
                         }
@@ -43,7 +45,7 @@ class Program
 
                     if (!found)
                     {
-                        Console.WriteLine($"{type} not found", type);
+                        Console.WriteLine($"{command} not found", command);
                     }
 
                     break;
@@ -54,8 +56,37 @@ class Program
                 case "exit":
                     return;
                 default:
-                    Console.WriteLine($"{command}: command not found");
-                    continue;
+                    bool isExecutable = false;
+
+                    foreach(string directory in directories)
+                    {
+                        string filePath = Path.Combine(directory, splitResult[0]);
+
+                        if (File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
+                        {
+                            isExecutable = true;
+                        }
+
+                        var args = splitResult[1..].ToString();
+
+                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        {
+                            FileName = splitResult[0],
+                            Arguments = args,
+                            UseShellExecute = false,
+                        };
+
+                        using (Process process = Process.Start(startInfo))
+                        {
+                            process.WaitForExit();
+                        }
+                    }
+
+
+                    if (!isExecutable)
+                        Console.WriteLine($"{userInput}: command not found");
+
+                    break;
             }
         }
     }
