@@ -82,7 +82,7 @@ class Program
                             Console.WriteLine($"Arg #{0} (program name): splitResult[0]");
                             for(int i = 1; i < args.Count(); i++)
                             {
-                                Console.WriteLine($"Arg #{1}: {args[i]}");
+                                Console.WriteLine($"Arg #{i}: {args[i].ToString()}");
                             }
                             process.WaitForExit();
                         }
