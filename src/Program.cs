@@ -8,9 +8,14 @@ class Program
             Console.Write("$ ");
 
             var command = Console.ReadLine();
+            var splitResult = command!.Split(" ");
 
-            switch(command!.Split(' ')[0])
+            switch(splitResult[0])
             {
+                case "echo":
+                    var msg = string.Join(" ", splitResult[1..]);
+                    Console.WriteLine(msg);
+                    break;
                 case "exit":
                     return;
                 default:
