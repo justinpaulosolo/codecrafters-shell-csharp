@@ -78,7 +78,11 @@ class Program
 
                         using (Process process = Process.Start(startInfo))
                         {
-                            Console.WriteLine($"Program was passed {splitResult.Length} args (including program name)");
+                            Console.WriteLine($"Program was passed {splitResult.Length} args (including program name).");
+                            for(int i = 0; i < splitResult.Length; i++)
+                            {
+                                Console.WriteLine($"Arg")
+                            }
                             process.WaitForExit();
                         }
                     }
