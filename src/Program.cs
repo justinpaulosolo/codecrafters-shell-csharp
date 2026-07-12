@@ -8,7 +8,15 @@ class Program
             Console.Write("$ ");
 
             var command = Console.ReadLine();
-            Console.WriteLine($"{command}: command not found");
+
+            switch(command!.Split(' ')[0])
+            {
+                case "exit":
+                    return;
+                default:
+                    Console.WriteLine($"{command}: command not found");
+                    continue;
+            }
         }
     }
 }
