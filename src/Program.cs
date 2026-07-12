@@ -42,7 +42,7 @@ class Program
                                                   UnixFileMode.GroupExecute |
                                                   UnixFileMode.OtherExecute)) != 0;
 
-                            if (File.Exists(fullPath) && canExecute)
+                            if (File.Exists(fullPath))
                             {
                                 Console.WriteLine($"{type} is {fullPath}");
                                 found = true;
