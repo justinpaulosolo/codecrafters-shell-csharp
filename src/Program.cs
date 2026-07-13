@@ -56,42 +56,46 @@ class Program
                 case "exit":
                     return;
                 default:
+                    string? resolvedPath = null;
                     bool isExecutable = false;
 
                     foreach(string directory in directories)
                     {
-                        string filePath = Path.Combine(directory, splitResult[1]);
+                        string filePath = Path.Combine(directory, splitResult[0]);
 
                         if (File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
                         {
-                            isExecutable = true;
+                            resolvedPath = filePath;
+                            break;
                         }
-
-                        var args = splitResult[1..];
-                        var argsCount = args.Length;
-
-                        ProcessStartInfo startInfo = new ProcessStartInfo
-                        {
-                            FileName = splitResult[0],
-                            Arguments = args.ToString(),
-                            UseShellExecute = false,
-                        };
-
-                        using (Process process = Process.Start(startInfo))
-                        {
-                            Console.WriteLine($"Program was passed {args.Length + 1} args (including program name).");
-                            Console.WriteLine($"Arg #{1} (program name): {splitResult[0]}");
-                            for(int i = 0; i < args.Count(); i++)
-                            {
-                                Console.WriteLine($"Arg #{i+1}: {args[i]}");
-                            }
-                            process.WaitForExit();
-                        }
+                    }
+                    if (resolvedPath == null)
+                    {
+                        Console.WriteLine($"{userInput}: command not found");
+                        break;
                     }
 
 
-                    if (!isExecutable)
-                        Console.WriteLine($"{userInput}: command not found");
+                    var args = splitResult[1..];
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = splitResult[0],
+                        Arguments = args.ToString(),
+                        UseShellExecute = false,
+                    };
+
+                    using (Process process = Process.Start(startInfo))
+                    {
+                        Console.WriteLine($"Program was passed {args.Length + 1} args (including program name).");
+                        Console.WriteLine($"Arg #{1} (program name): {splitResult[0]}");
+                        for(int i = 0; i < args.Count(); i++)
+                        {
+                            Console.WriteLine($"Arg #{i+1}: {args[i]}");
+                        }
+                        process.WaitForExit();
+                    }
+
 
                     break;
             }
