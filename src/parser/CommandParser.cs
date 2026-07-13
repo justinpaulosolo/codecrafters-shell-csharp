@@ -17,6 +17,7 @@ internal static class CommandParser
         {
             "echo" => new EchoCommand(args),
             "type" => new TypeCommand(args),
+            "pwd" => new PwdCommand(),
             "exit" => new ExitCommand(),
             _ => new ExternalCommand(name, args)
         };
