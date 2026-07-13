@@ -57,7 +57,6 @@ class Program
                     return;
                 default:
                     string? resolvedPath = null;
-                    bool isExecutable = false;
 
                     foreach(string directory in directories)
                     {
@@ -76,7 +75,7 @@ class Program
                     }
 
 
-                    var args = splitResult[1..];
+                    string[]? args = splitResult[1..];
 
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
@@ -85,17 +84,21 @@ class Program
                         UseShellExecute = false,
                     };
 
+                    foreach(string a in args)
+                    {
+                        startInfo.ArgumentList.Add(a);
+                    }
+
                     using (Process process = Process.Start(startInfo))
                     {
                         Console.WriteLine($"Program was passed {args.Length + 1} args (including program name).");
-                        Console.WriteLine($"Arg #{0} (program name): {splitResult[0]}");
-                        for(int i = 0; i < args.Count(); i++)
+                        Console.WriteLine($"Arg #0 (program name): {splitResult[0]}");
+                        for(int i = 0; i < args.Length; i++)
                         {
-                            Console.WriteLine($"Arg #{i+1}: {args[i]}.ToString()");
+                            Console.WriteLine($"Arg #{i+1}: {args[i]}");
                         }
                         process.WaitForExit();
                     }
-
 
                     break;
             }
