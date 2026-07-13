@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO.Pipelines;
 
 class Program
 {
@@ -68,6 +69,7 @@ class Program
                             break;
                         }
                     }
+
                     if (resolvedPath == null)
                     {
                         Console.WriteLine($"{userInput}: command not found");
@@ -79,7 +81,7 @@ class Program
 
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
-                        FileName = splitResult[0],
+                        FileName = resolvedPath,
                         UseShellExecute = false,
                     };
 
