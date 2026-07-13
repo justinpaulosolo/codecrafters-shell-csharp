@@ -91,7 +91,7 @@ class Program
                         Console.WriteLine($"Arg #{1} (program name): {splitResult[0]}");
                         for(int i = 0; i < args.Count(); i++)
                         {
-                            Console.WriteLine($"Arg #{i+1}: {args[i]}");
+                            Console.WriteLine($"Arg #{i+1}: {args[i]}.ToString()");
                         }
                         process.WaitForExit();
                     }
