@@ -67,7 +67,7 @@ class Program
                             isExecutable = true;
                         }
 
-                        var args = splitResult[2..];
+                        var args = splitResult[1..];
                         var argsCount = args.Length;
 
                         ProcessStartInfo startInfo = new ProcessStartInfo
@@ -79,11 +79,11 @@ class Program
 
                         using (Process process = Process.Start(startInfo))
                         {
-                            Console.WriteLine($"Program was passed {argsCount + 2} args (including program name).");
+                            Console.WriteLine($"Program was passed {args.Length + 1} args (including program name).");
                             Console.WriteLine($"Arg #{1} (program name): {splitResult[0]}");
-                            for(int i = 1; i < args.Count(); i++)
+                            for(int i = 0; i < args.Count(); i++)
                             {
-                                Console.WriteLine($"Arg #{i}: {args[i].ToString()}");
+                                Console.WriteLine($"Arg #{i+1}: {args[i]}");
                             }
                             process.WaitForExit();
                         }
