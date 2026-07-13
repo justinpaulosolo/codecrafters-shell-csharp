@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.IO.Pipelines;
 
 class Program
 {
@@ -81,7 +80,7 @@ class Program
 
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
-                        FileName = resolvedPath,
+                        FileName = splitResult[0],
                         UseShellExecute = false,
                     };
 
