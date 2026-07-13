@@ -2,20 +2,26 @@ using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
 
-internal class CdCommand(string arg) : BuiltinCommand
+internal class CdCommand(string[] arg) : BuiltinCommand
 {
-    private readonly string _arg = arg;
+    private readonly string[] _args = arg;
     public override string CommandName => "cd";
 
     public override void Execute(ShellState state)
     {
-        if (Directory.Exists(_arg))
+        if (_args.Length == 0)
         {
-            Directory.SetCurrentDirectory(_arg);
+            return;
+        }
+
+        var target = _args[0];
+        if (Directory.Exists(target))
+        {
+            Directory.SetCurrentDirectory(target);
         }
         else
         {
-            Console.WriteLine($"cd: {_arg}: No such file or directory");
+            Console.WriteLine($"cd: {target}: No such file or directory");
         }
     }
 }
