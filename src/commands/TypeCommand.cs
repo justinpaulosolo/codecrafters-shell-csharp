@@ -4,7 +4,7 @@ namespace CodeCrafters.Shell.Commands;
 
 internal class TypeCommand : BuiltinCommand
 {
-    private static readonly string[] _builtinNames = { "echo", "exit", "type" };
+    private static readonly string[] _builtinNames = { "echo", "exit", "type", "pwd" };
     private readonly string[] _args;
 
     public TypeCommand(string[] args)
