@@ -15,9 +15,18 @@ internal class CdCommand(string[] arg) : BuiltinCommand
         }
 
         var target = _args[0];
-        if (Directory.Exists(target))
-        {
 
+        if (target == "~")
+        {
+            var home = System.Environment.GetEnvironmentVariable("HOME");
+
+            if (home == null)
+                return;
+
+            Directory.SetCurrentDirectory(home);
+        }
+        else if (Directory.Exists(target))
+        {
             Directory.SetCurrentDirectory(target);
         }
         else
