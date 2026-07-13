@@ -13,5 +13,9 @@ internal class CdCommand(string arg) : BuiltinCommand
         {
             Directory.SetCurrentDirectory(_arg);
         }
+        else
+        {
+            Console.WriteLine($"cd: {_arg}: No such file or directory");
+        }
     }
 }
