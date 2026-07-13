@@ -46,6 +46,12 @@ public static class Tokenizer
                 currentToken.Append(c);
             }
         }
+
+        if (currentToken.Length > 0)
+        {
+            tokens.Add(currentToken.ToString());
+        }
+
         return tokens.ToArray();
     }
 }
