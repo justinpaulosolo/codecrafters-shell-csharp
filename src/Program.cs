@@ -80,7 +80,7 @@ class Program
 
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
-                        FileName = splitResult[0],
+                        FileName = resolvedPath,
                         UseShellExecute = false,
                     };
 
