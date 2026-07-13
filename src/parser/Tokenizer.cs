@@ -36,9 +36,9 @@ public static class Tokenizer
                     if (currentToken.Length > 0)
                     {
                         tokens.Add(currentToken.ToString());
-                        currentToken.Clear();
-                        insideQuotes = false;
                     }
+                    currentToken.Clear();
+                    insideQuotes = false;
                 }
             }
             else
