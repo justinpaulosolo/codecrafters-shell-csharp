@@ -60,28 +60,28 @@ class Program
 
                     foreach(string directory in directories)
                     {
-                        string filePath = Path.Combine(directory, splitResult[0]);
+                        string filePath = Path.Combine(directory, splitResult[1]);
 
                         if (File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
                         {
                             isExecutable = true;
                         }
 
-                        var args = splitResult[1..];
+                        var args = splitResult[2..];
                         var argsCount = args.Length;
 
                         ProcessStartInfo startInfo = new ProcessStartInfo
                         {
-                            FileName = splitResult[0],
+                            FileName = splitResult[1],
                             Arguments = args.ToString(),
                             UseShellExecute = false,
                         };
 
                         using (Process process = Process.Start(startInfo))
                         {
-                            Console.WriteLine($"Program was passed {argsCount + 1} args (including program name).");
-                            Console.WriteLine($"Arg #{0} (program name): {splitResult[0]}");
-                            for(int i = 1; i < args.Count(); i++)
+                            Console.WriteLine($"Program was passed {argsCount + 2} args (including program name).");
+                            Console.WriteLine($"Arg #{1} (program name): {splitResult[0]}");
+                            for(int i = 2; i < args.Count(); i++)
                             {
                                 Console.WriteLine($"Arg #{i}: {args[i].ToString()}");
                             }
