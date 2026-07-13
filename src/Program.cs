@@ -72,7 +72,7 @@ class Program
 
                         ProcessStartInfo startInfo = new ProcessStartInfo
                         {
-                            FileName = splitResult[1],
+                            FileName = splitResult[0],
                             Arguments = args.ToString(),
                             UseShellExecute = false,
                         };
