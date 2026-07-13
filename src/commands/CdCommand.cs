@@ -17,6 +17,7 @@ internal class CdCommand(string[] arg) : BuiltinCommand
         var target = _args[0];
         if (Directory.Exists(target))
         {
+
             Directory.SetCurrentDirectory(target);
         }
         else

@@ -8,7 +8,7 @@ internal class PwdCommand() : BuiltinCommand
 
     public override void Execute(ShellState _)
     {
-        string pwd = System.IO.Directory.GetCurrentDirectory();
+        string pwd = Directory.GetCurrentDirectory();
         Console.WriteLine($"{pwd}");
     }
 }
