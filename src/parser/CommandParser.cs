@@ -16,6 +16,7 @@ internal static class CommandParser
         return name switch
         {
             "echo" => new EchoCommand(args),
+            "type" => new TypeCommand(args),
             "exit" => new ExitCommand(),
             _ => new ExternalCommand(name, args)
         };

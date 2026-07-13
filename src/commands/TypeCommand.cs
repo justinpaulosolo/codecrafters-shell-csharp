@@ -23,5 +23,15 @@ internal class TypeCommand : BuiltinCommand
             Console.WriteLine($"{target} is a shell builtin");
             return;
         }
+        
+        var resolvedPath = PathResolver.Resolve(target);
+        if (resolvedPath != null)
+        {
+            Console.WriteLine($"{target} is {resolvedPath}");
+        }
+        else
+        {
+            Console.WriteLine($"{target}: not found");
+        }
     }
 }

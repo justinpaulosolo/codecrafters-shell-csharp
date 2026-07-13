@@ -1,19 +1,33 @@
+using System.Diagnostics;
 using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
 
-internal class ExternalCommand : Command
+internal class ExternalCommand(string name, string[] args) : Command
 {
-    private readonly string _name;
-    private readonly string[] _args;
-    public ExternalCommand(string name, string[] args)
-    {
-        _name = name;
-        _args = args;
+    private readonly string _name = name;
+    private readonly string[] _args = args;
 
-    }
     public override void Execute(ShellState state)
     {
-        throw new NotImplementedException();
+        var resolvedPath = PathResolver.Resolve(_name);
+
+        if (resolvedPath != null)
+        {
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = _name,
+                UseShellExecute = false,
+            };
+
+            foreach(var arg in _args)
+            {
+                startInfo.ArgumentList.Add(arg);
+            }
+
+            using Process process = Process.Start(startInfo);
+            Console.WriteLine($"Program was passed {_args.Length} args (including program name).");
+            process.WaitForExit();
+        }
     }
 }
