@@ -80,7 +80,6 @@ class Program
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = splitResult[0],
-                        Arguments = args.ToString(),
                         UseShellExecute = false,
                     };
 
