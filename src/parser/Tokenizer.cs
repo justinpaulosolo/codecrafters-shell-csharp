@@ -29,17 +29,18 @@ public static class Tokenizer
             }
             else if (c == '\'')
             {
-                if (!insideQuotes)
-                    insideQuotes = true;
-                else
-                {
-                    if (currentToken.Length > 0)
-                    {
-                        tokens.Add(currentToken.ToString());
-                        currentToken.Clear();
-                        insideQuotes = false;
-                    }
-                }
+                // if (!insideQuotes)
+                //     insideQuotes = true;
+                // else
+                // {
+                //     if (currentToken.Length > 0)
+                //     {
+                //         tokens.Add(currentToken.ToString());
+                //         currentToken.Clear();
+                //         insideQuotes = false;
+                //     }
+                // }
+                insideQuotes = !insideQuotes;
             }
             else
             {
