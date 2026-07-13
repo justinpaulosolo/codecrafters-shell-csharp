@@ -26,8 +26,11 @@ internal class ExternalCommand(string name, string[] args) : Command
             }
 
             using Process process = Process.Start(startInfo);
-            Console.WriteLine($"Program was passed {_args.Length} args (including program name).");
             process.WaitForExit();
+        }
+        else
+        {
+            Console.WriteLine($"{_name}: command not found");
         }
     }
 }
