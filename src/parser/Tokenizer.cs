@@ -17,7 +17,8 @@ public static class Tokenizer
             if (escapeNext)
             {
                 currentToken.Append(c);
-                escapeNext = !escapeNext;
+                if (!insideQuotes)
+                    escapeNext = !escapeNext;
             }
             else if (c == ' ')
             {
