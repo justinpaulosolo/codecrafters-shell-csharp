@@ -12,10 +12,6 @@ internal static class RedirectionParser
         for(int i = 0; i < tokens.Length; i++)
         {
             // TODO: If last token is > ie  "echo hello >" this should be a syntax error
-            if(tokens[i] == "1" && tokens[i+1] == ">")
-            {
-                continue;
-            }
             if(tokens[i] == ">" && i + 1 < tokens.Length)
             {
                 target = tokens[i+1];
