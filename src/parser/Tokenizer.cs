@@ -10,10 +10,16 @@ public static class Tokenizer
         var currentToken = new StringBuilder();
         bool insideQuotes = false;
         bool insideDoubleQuotes = false;
+        bool escapeNext = false;
 
         foreach(char c in input)
         {
-            if (c == ' ')
+            if (escapeNext)
+            {
+                currentToken.Append(c);
+                escapeNext = !escapeNext;
+            }
+            else if (c == ' ')
             {
                 if(insideDoubleQuotes)
                 {
