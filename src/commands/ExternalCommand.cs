@@ -28,6 +28,11 @@ internal class ExternalCommand(string name, string[] args, string? stdoutTarget,
                 startInfo.RedirectStandardOutput = true;
             }
 
+            if (_stdoutTarget != null)
+            {
+                startInfo.RedirectStandardError = true;
+            }
+
             foreach(var arg in _args)
             {
                 startInfo.ArgumentList.Add(arg);
@@ -40,6 +45,13 @@ internal class ExternalCommand(string name, string[] args, string? stdoutTarget,
                 string output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
                 File.WriteAllText(_stdoutTarget, output);
+            }
+
+            if(_stderrTarget != null)
+            {
+                string output = process.StandardError.ReadToEnd();
+                process.WaitForExit();
+                File.WriteAllText(_stderrTarget, output);
             }
             process.WaitForExit();
         }
