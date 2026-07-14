@@ -15,7 +15,7 @@ public static class Tokenizer
         {
             if (c == ' ')
             {
-                if(insideQuotes)
+                if(insideQuotes && insideDoubleQuotes)
                 {
                     currentToken.Append(c);
                 }
