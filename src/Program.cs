@@ -22,7 +22,7 @@ class Program
                 {
                     if (parsed.StdoutTarget != null)
                     {
-                        writer = new StreamWriter(parsed.StdoutTarget)
+                        writer = new StreamWriter(parsed.StdoutTarget, append: parsed.StdoutAppend)
                         {
                             AutoFlush = true
                         };
@@ -31,7 +31,7 @@ class Program
 
                     if (parsed.StderrTarget != null)
                     {
-                        writer = new StreamWriter(parsed.StderrTarget)
+                        writer = new StreamWriter(parsed.StderrTarget, append: parsed.StderrAppend)
                         {
                             AutoFlush = true
                         };
