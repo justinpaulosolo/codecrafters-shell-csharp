@@ -22,7 +22,12 @@ internal static class CommandParser
             "cd" => new CdCommand(args),
             "pwd" => new PwdCommand(),
             "exit" => new ExitCommand(),
-            _ => new ExternalCommand(name, args, result.StdoutTarget, result.StderrTarget)
+            _ => new ExternalCommand(name,
+                                     args,
+                                     result.StdoutTarget,
+                                     result.StderrTarget,
+                                     result.StderrAppend,
+                                     result.StderrAppend)
         };
         return new ParsedCommand(command, result.StdoutTarget, result.StderrTarget);
     }
