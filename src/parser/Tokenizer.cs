@@ -46,6 +46,8 @@ public static class Tokenizer
                 //         insideQuotes = false;
                 //     }
                 // }
+                if (insideDoubleQuotes)
+                    currentToken.Append(c);
                 insideQuotes = !insideQuotes;
             }
             else if(c == '\"')
