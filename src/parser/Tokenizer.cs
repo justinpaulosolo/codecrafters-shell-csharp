@@ -9,6 +9,7 @@ public static class Tokenizer
         var tokens = new List<string>();
         var currentToken = new StringBuilder();
         bool insideQuotes = false;
+        bool insideDoubleQuotes = false;
 
         foreach(char c in input)
         {
@@ -41,6 +42,11 @@ public static class Tokenizer
                 //     }
                 // }
                 insideQuotes = !insideQuotes;
+            }
+            else if(c == '\"')
+            {
+                insideDoubleQuotes = !insideDoubleQuotes;
+
             }
             else
             {
