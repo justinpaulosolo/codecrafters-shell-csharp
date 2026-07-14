@@ -84,6 +84,10 @@ internal abstract class Program
                     buffer.Append(missing);
                     Console.Write(missing);
                 }
+                else
+                {
+                    Console.Write("\x07");
+                }
             }
             else if (keyInfo.Key == ConsoleKey.Backspace)
             {
