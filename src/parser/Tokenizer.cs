@@ -43,15 +43,17 @@ public static class Tokenizer
                 if (insideDoubleQuotes)
                     currentToken.Append(c);
                 else
-                {
                     insideQuotes = !insideQuotes;
-                    escapeNext = !escapeNext;
-                }
             }
             else if(c == '\"')
             {
                 insideDoubleQuotes = !insideDoubleQuotes;
 
+            }
+            else if (c == '\\')
+            {
+                if (!insideQuotes)
+                    escapeNext = !escapeNext;
             }
             else
             {
