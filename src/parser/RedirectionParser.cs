@@ -15,15 +15,17 @@ internal static class RedirectionParser
             // TODO: If last token is > ie  "echo hello >" this should be a syntax error
             if(tokens[i] == ">" && i + 1 < tokens.Length)
             {
+                var target = tokens[i + 1];
 
-                if(i-1 >= 0)
+                if(i-1 >= 0 && tokens[i - 1] == "2")
                 {
-                    if (tokens[i - 1] == "1")
-                        stdoutTarget = tokens[i+1];
-                    if (tokens[i - 1] == "2")
-                        stderrTarget = tokens[i+1];
-                        
+                    stderrTarget = target;
                     args = tokens[..(i-1)];
+                }
+                else if(i-1 >= 0 && tokens[i - 1] == "1")
+                {
+                    stdoutTarget = target;
+                    args = tokens[..(i - 1)];
                 }
                 else
                 {
