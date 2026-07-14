@@ -18,7 +18,6 @@ public static class Tokenizer
                 if(insideDoubleQuotes)
                 {
                     currentToken.Append(c);
-                    continue;
                 }
                 else if(insideQuotes)
                 {
@@ -35,17 +34,6 @@ public static class Tokenizer
             }
             else if (c == '\'')
             {
-                // if (!insideQuotes)
-                //     insideQuotes = true;
-                // else
-                // {
-                //     if (currentToken.Length > 0)
-                //     {
-                //         tokens.Add(currentToken.ToString());
-                //         currentToken.Clear();
-                //         insideQuotes = false;
-                //     }
-                // }
                 if (insideDoubleQuotes)
                     currentToken.Append(c);
                 insideQuotes = !insideQuotes;
