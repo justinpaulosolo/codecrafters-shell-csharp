@@ -1,12 +1,14 @@
 using System.Diagnostics;
+using CodeCrafters.Shell.Parser;
 using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
 
-internal class ExternalCommand(string name, string[] args) : Command
+internal class ExternalCommand(string name, string[] args, string? redirectTarget) : Command
 {
     private readonly string _name = name;
     private readonly string[] _args = args;
+    private readonly string? _redirectTarget = redirectTarget;
 
     public override void Execute(ShellState state)
     {
@@ -20,12 +22,24 @@ internal class ExternalCommand(string name, string[] args) : Command
                 UseShellExecute = false,
             };
 
+            if(_redirectTarget != null)
+            {
+                startInfo.RedirectStandardOutput = true;
+            }
+
             foreach(var arg in _args)
             {
                 startInfo.ArgumentList.Add(arg);
             }
 
             using Process process = Process.Start(startInfo);
+
+            if(_redirectTarget != null)
+            {
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                File.WriteAllText(_redirectTarget, output);
+            }
             process.WaitForExit();
         }
         else
