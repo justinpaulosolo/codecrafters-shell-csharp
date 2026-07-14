@@ -63,7 +63,7 @@ public static class Tokenizer
                 else
                     escapeNext = true;
             }
-            else if (c == '>' && !insideQuotes && insideDoubleQuotes)
+            else if (c == '>' && !insideQuotes && !insideDoubleQuotes)
             {
                 if (currentToken.Length > 0)
                 {
