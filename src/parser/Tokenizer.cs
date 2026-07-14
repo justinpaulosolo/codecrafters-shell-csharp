@@ -70,6 +70,7 @@ public static class Tokenizer
                     tokens.Add(currentToken.ToString());
                     currentToken.Clear();
                 }
+                tokens.Add(">");
             }
             else
             {
