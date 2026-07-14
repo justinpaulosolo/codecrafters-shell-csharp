@@ -25,6 +25,10 @@ internal static class RedirectionParser
                 else if(i-1 >= 0 && tokens[i - 1] == "1")
                 {
                     stdoutTarget = target;
+                    if(tokens[i+1] == ">")
+                    {
+                        stdoutTarget = tokens[i + 2];
+                    }
                     args = tokens[..(i - 1)];
                 }
                 else
