@@ -20,13 +20,22 @@ class Program
                 StreamWriter? writer = null;
                 try
                 {
-                    if (parsed.RedirectTarget != null)
+                    if (parsed.StdoutTarget != null)
                     {
-                        writer = new StreamWriter(parsed.RedirectTarget)
+                        writer = new StreamWriter(parsed.StdoutTarget)
                         {
                             AutoFlush = true
                         };
                         Console.SetOut(writer);
+                    }
+
+                    if (parsed.StderrTarget != null)
+                    {
+                        writer = new StreamWriter(parsed.StderrTarget)
+                        {
+                            AutoFlush = true
+                        };
+                        Console.SetError(writer);
                     }
                     parsed.Command.Execute(state);
                 }

@@ -4,11 +4,12 @@ using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
 
-internal class ExternalCommand(string name, string[] args, string? redirectTarget) : Command
+internal class ExternalCommand(string name, string[] args, string? stdoutTarget, string? stderrTarget) : Command
 {
     private readonly string _name = name;
     private readonly string[] _args = args;
-    private readonly string? _redirectTarget = redirectTarget;
+    private readonly string? _stdoutTarget = stdoutTarget;
+    private readonly string? _stderrTarget = stderrTarget;
 
     public override void Execute(ShellState state)
     {
@@ -22,7 +23,7 @@ internal class ExternalCommand(string name, string[] args, string? redirectTarge
                 UseShellExecute = false,
             };
 
-            if(_redirectTarget != null)
+            if(_stdoutTarget != null)
             {
                 startInfo.RedirectStandardOutput = true;
             }
@@ -34,11 +35,11 @@ internal class ExternalCommand(string name, string[] args, string? redirectTarge
 
             using Process process = Process.Start(startInfo);
 
-            if(_redirectTarget != null)
+            if(_stdoutTarget != null)
             {
                 string output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
-                File.WriteAllText(_redirectTarget, output);
+                File.WriteAllText(_stdoutTarget, output);
             }
             process.WaitForExit();
         }

@@ -1,3 +1,3 @@
 using CodeCrafters.Shell.Commands;
 
-internal record ParsedCommand(Command? Command, string? RedirectTarget);
+internal record ParsedCommand(Command? Command, string? StdoutTarget, string? StderrTarget);

@@ -22,8 +22,8 @@ internal static class CommandParser
             "cd" => new CdCommand(args),
             "pwd" => new PwdCommand(),
             "exit" => new ExitCommand(),
-            _ => new ExternalCommand(name, args, result.Target)
+            _ => new ExternalCommand(name, args, result.StdoutTarget, result.StderrTarget)
         };
-        return new ParsedCommand(command, result.Target);
+        return new ParsedCommand(command, result.StdoutTarget, result.StderrTarget);
     }
 }
