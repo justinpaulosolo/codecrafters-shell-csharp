@@ -73,16 +73,16 @@ internal abstract class Program
                 if ("echo".StartsWith(current))
                 {
                     const string match = "echo"; // the one that matched
-                    var missing = match[current.Length..];
+                    var missing = match[current.Length..] + " ";
                     buffer.Append(missing);
-                    Console.Write(missing + " ");
+                    Console.Write(missing);
                 }
                 else if ("exit".StartsWith(current))
                 {
                     const string match = "exit";
-                    var missing = match[current.Length..];
+                    var missing = match[current.Length..] + " ";
                     buffer.Append(missing);
-                    Console.Write(missing + " ");
+                    Console.Write(missing);
                 }
             }
             else if (keyInfo.Key == ConsoleKey.Backspace)
