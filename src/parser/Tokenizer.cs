@@ -70,6 +70,8 @@ public static class Tokenizer
                     tokens.Add(currentToken.ToString());
                     currentToken.Clear();
                 }
+                if (tokens[^1] == ">")
+                    tokens[^1] = ">>";
                 tokens.Add(">");
             }
             else

@@ -1,6 +1,11 @@
 namespace CodeCrafters.Shell.Parser;
 
-internal record RedirectionResult(string[] Args, string? StdoutTarget, string? StderrTarget);
+internal record RedirectionResult(
+    string[] Args,
+    string? StdoutTarget,
+    string? StderrTarget,
+    bool StdoutAppend,
+    bool StderrAppend);
 
 internal static class RedirectionParser
 {
@@ -9,40 +14,46 @@ internal static class RedirectionParser
         string[] args = tokens;
         string? stdoutTarget = null;
         string? stderrTarget = null;
+        bool stdoutAppend = false;
+        bool stderrAppend = false;
 
         for(int i = 0; i < tokens.Length; i++)
         {
-            // TODO: If last token is > ie  "echo hello >" this should be a syntax error
-            if(tokens[i] == ">" && i + 1 < tokens.Length)
-            {
-                var target = tokens[i + 1];
+            bool isRedirect = tokens[i] == ">" || tokens[i] == ">>";
 
-                if(i-1 >= 0 && tokens[i - 1] == "2")
-                {
-                    stderrTarget = target;
-                    args = tokens[..(i-1)];
-                }
-                else if(i-1 >= 0 && tokens[i - 1] == "1")
-                {
-                    stdoutTarget = target;
-                    if(tokens[i+1] == ">")
-                    {
-                        stdoutTarget = tokens[i + 2];
-                    }
-                    args = tokens[..(i - 1)];
-                }
-                else
-                {
-                    args = tokens[..i];
-                    stdoutTarget = tokens[i+1];
-                    if(tokens[i+1] == ">")
-                    {
-                        stdoutTarget = tokens[i + 2];
-                    }
-                }
+            if (!isRedirect) continue;
+
+            if (i + 1 >= tokens.Length)
                 break;
+
+            bool append = tokens[i] == ">>";
+            var target = tokens[i + 1];
+
+            if (i - 1 >= 0 && tokens[i - 1] == "2")
+            {
+                stderrTarget = target;
+                stderrAppend = append;
+                args = tokens[..(i-1)];
             }
-        }
-        return new RedirectionResult(args, stdoutTarget, stderrTarget);
+            else if (i - 1 >= 0 && tokens[i - 1] == "1")
+            {
+                stdoutTarget = target;
+                stdoutAppend = append;
+                args = tokens[..(i-1)];
+            }
+            else
+            {
+                stdoutTarget = target;
+                stdoutAppend = append;
+                args = tokens[..1];
+            }
+
+            break;
+            }
+        return new RedirectionResult(args,
+                                    stdoutTarget,
+                                    stderrTarget,
+                                    stdoutAppend,
+                                    stderrAppend);
     }
 }
