@@ -3,12 +3,19 @@ using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
 
-internal class ExternalCommand(string name, string[] args, string? stdoutTarget, string? stderrTarget) : Command
+internal class ExternalCommand(string name,
+    string[] args,
+    string? stdoutTarget,
+    string? stderrTarget,
+    bool stdoutAppend,
+    bool stderrAppend) : Command
 {
     private readonly string _name = name;
     private readonly string[] _args = args;
     private readonly string? _stdoutTarget = stdoutTarget;
     private readonly string? _stderrTarget = stderrTarget;
+    private readonly bool _stdoutAppend = stdoutAppend;
+    private readonly bool _stderrAppend = stderrAppend;
 
     public override void Execute(ShellState state)
     {
@@ -44,12 +51,18 @@ internal class ExternalCommand(string name, string[] args, string? stdoutTarget,
 
             if(_stdoutTarget != null)
             {
-                File.WriteAllText(_stdoutTarget, stdoutContent);
+                if (_stdoutAppend)
+                    File.AppendAllText(_stdoutTarget, stdoutContent);
+                else
+                    File.WriteAllText(_stdoutTarget, stdoutContent);
             }
 
             if(_stderrTarget != null)
             {
-                File.WriteAllText(_stderrTarget, stderrContent);
+                if (_stderrAppend)
+                    File.AppendAllText(_stderrTarget, stderrContent);
+                else
+                    File.WriteAllText(_stderrTarget, stderrContent);
             }
 
             process.WaitForExit();
