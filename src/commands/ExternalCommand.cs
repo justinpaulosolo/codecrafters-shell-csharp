@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using CodeCrafters.Shell.Parser;
 using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
@@ -28,7 +27,7 @@ internal class ExternalCommand(string name, string[] args, string? stdoutTarget,
                 startInfo.RedirectStandardOutput = true;
             }
 
-            if (_stdoutTarget != null)
+            if (_stderrTarget != null)
             {
                 startInfo.RedirectStandardError = true;
             }
@@ -40,19 +39,19 @@ internal class ExternalCommand(string name, string[] args, string? stdoutTarget,
 
             using Process process = Process.Start(startInfo);
 
+            string? stdoutContent = _stdoutTarget != null ? process.StandardOutput.ReadToEnd() : null;
+            string? stderrContent = _stderrTarget != null ? process.StandardError.ReadToEnd() : null;
+
             if(_stdoutTarget != null)
             {
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-                File.WriteAllText(_stdoutTarget, output);
+                File.WriteAllText(_stdoutTarget, stdoutContent);
             }
 
             if(_stderrTarget != null)
             {
-                string output = process.StandardError.ReadToEnd();
-                process.WaitForExit();
-                File.WriteAllText(_stderrTarget, output);
+                File.WriteAllText(_stderrTarget, stderrContent);
             }
+
             process.WaitForExit();
         }
         else
