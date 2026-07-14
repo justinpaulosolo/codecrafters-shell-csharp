@@ -55,7 +55,6 @@ public static class Tokenizer
                 if (insideQuotes)
                 {
                     currentToken.Append(c);
-                    escapeNext = true;
                 }
                 else
                     escapeNext = true;
