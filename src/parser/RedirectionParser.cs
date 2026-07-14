@@ -45,7 +45,7 @@ internal static class RedirectionParser
             {
                 stdoutTarget = target;
                 stdoutAppend = append;
-                args = tokens[..1];
+                args = tokens[..i];
             }
 
             break;
