@@ -29,6 +29,10 @@ internal static class CommandParser
                                      result.StderrAppend,
                                      result.StderrAppend)
         };
-        return new ParsedCommand(command, result.StdoutTarget, result.StderrTarget);
+        return new ParsedCommand(command,
+                                 result.StdoutTarget,
+                                 result.StderrTarget,
+                                 result.StdoutAppend,
+                                 result.StderrAppend);
     }
 }
