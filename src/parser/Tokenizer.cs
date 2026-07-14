@@ -65,14 +65,29 @@ public static class Tokenizer
             }
             else if (c == '>' && !insideQuotes && !insideDoubleQuotes)
             {
-                if (currentToken.Length > 0)
+                string op = ">";
+
+                string pending = currentToken.ToString();
+
+                if(pending is "1" or "2")
+                {
+                    op = pending + op;
+                    currentToken.Clear();
+                }
+                else if (currentToken.Length > 0)
                 {
                     tokens.Add(currentToken.ToString());
                     currentToken.Clear();
                 }
-                if (tokens[^1] == ">")
-                    tokens[^1] = ">>";
-                tokens.Add(">");
+
+                if(op is ">" && tokens.Count > 0 && tokens[^1] == ">" || tokens[^1] is "1" or "2")
+                {
+                    tokens[^1] += ">";
+                }
+                else
+                {
+                    tokens.Add(op);
+                }
             }
             else
             {
