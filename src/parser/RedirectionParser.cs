@@ -15,7 +15,7 @@ internal static class RedirectionParser
             if(tokens[i] == ">" && i + 1 < tokens.Length)
             {
                 target = tokens[i+1];
-                args = tokens[..i];
+                args = tokens[..(i-1)];
                 break;
             }
         }
