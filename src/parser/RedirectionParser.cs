@@ -35,6 +35,10 @@ internal static class RedirectionParser
                 {
                     args = tokens[..i];
                     stdoutTarget = tokens[i+1];
+                    if(tokens[i+1] == ">")
+                    {
+                        stdoutTarget = tokens[i + 2];
+                    }
                 }
                 break;
             }
