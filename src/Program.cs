@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using CodeCrafters.Shell.parser;
 using CodeCrafters.Shell.Parser;
@@ -71,15 +72,24 @@ internal abstract class Program
 
                 if ("echo".StartsWith(current))
                 {
-                    var match = "echo"; // the one that matched
-                    var missing = match.Substring(current.Length);
-                    buffer.Append(current + missing);
-                    Console.Write(buffer.ToString());
+                    const string match = "echo"; // the one that matched
+                    var missing = match[current.Length..];
+                    buffer.Append(missing);
+                    Console.Write(missing);
+                }
+                else if ("exit".StartsWith(current))
+                {
+                    const string match = "exit";
+                    var missing = match[current.Length..];
+                    buffer.Append(missing);
+                    Console.Write(missing);
                 }
             }
-            else if (keyInfo.Key == ConsoleKey.Backspace && buffer.Length > 0)
+            else if (keyInfo.Key == ConsoleKey.Backspace)
             {
+                if (buffer.Length <= 0) continue;
                 buffer.Remove(buffer.Length - 1, 1);
+                Console.Write("\b \b");
             }
             else
             {
@@ -87,9 +97,7 @@ internal abstract class Program
                 Console.Write(keyInfo.KeyChar);
             }
         }
-        
-        var line = Console.ReadLine();
-
-        return line == null ? null : CommandParser.ParseCommand(line);
+        var line = CommandParser.ParseCommand(buffer.ToString());
+        return line;
     }
 }
