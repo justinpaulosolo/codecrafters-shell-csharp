@@ -63,6 +63,14 @@ public static class Tokenizer
                 else
                     escapeNext = true;
             }
+            else if (c == '<' && !insideQuotes && insideDoubleQuotes)
+            {
+                if (currentToken.Length > 0)
+                {
+                    tokens.Add(currentToken.ToString());
+                    currentToken.Clear();
+                }
+            }
             else
             {
                 currentToken.Append(c);

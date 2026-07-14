@@ -12,9 +12,30 @@ class Program
         {
             PrintPrompt();
 
-            var command = GetCommand();
+            var parsed = GetCommand();
 
-            command?.Execute(state);
+            if (parsed?.Command != null)
+            {
+                var originalOut = Console.Out;
+                StreamWriter? writer = null;
+                try
+                {
+                    if (parsed.RedirectTarget != null)
+                    {
+                        writer = new StreamWriter(parsed.RedirectTarget)
+                        {
+                            AutoFlush = true
+                        };
+                        Console.SetOut(writer);
+                    }
+                    parsed.Command.Execute(state);
+                }
+                finally
+                {
+                    Console.SetOut(originalOut);
+                    writer?.Dispose();
+                }
+            }
         }
     }
 
@@ -23,7 +44,7 @@ class Program
         Console.Write("$ ");
     }
 
-    public static Command? GetCommand()
+    public static ParsedCommand? GetCommand()
     {
         var line = Console.ReadLine();
 

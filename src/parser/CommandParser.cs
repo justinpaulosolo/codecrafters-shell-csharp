@@ -4,16 +4,18 @@ namespace CodeCrafters.Shell.Parser;
 
 internal static class CommandParser
 {
-    public static Command? ParseCommand(string input)
+    public static ParsedCommand? ParseCommand(string input)
     {
         var tokens = Tokenizer.Tokenize(input);
         
         if (tokens.Length == 0) return null;
 
-        var name = tokens[0];
-        var args = tokens[1..];
+        var result = RedirectionParser.Parse(tokens);
 
-        return name switch
+        var name = result.Args[0];
+        var args = result.Args[1..];
+
+        Command command = name switch
         {
             "echo" => new EchoCommand(args),
             "type" => new TypeCommand(args),
@@ -22,5 +24,6 @@ internal static class CommandParser
             "exit" => new ExitCommand(),
             _ => new ExternalCommand(name, args)
         };
+        return new ParsedCommand(command, result.Target);
     }
 }
