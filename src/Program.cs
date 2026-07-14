@@ -1,10 +1,13 @@
-using CodeCrafters.Shell.Commands;
+using System.Text;
+using CodeCrafters.Shell.parser;
 using CodeCrafters.Shell.Parser;
 using CodeCrafters.Shell.State;
 
-class Program
+namespace CodeCrafters.Shell;
+
+internal abstract class Program
 {
-    static void Main()
+    private static void Main()
     {
         ShellState state = new();
 
@@ -14,54 +17,79 @@ class Program
 
             var parsed = GetCommand();
 
-            if (parsed?.Command != null)
+            if (parsed?.Command == null) continue;
+            var originalOut = Console.Out;
+            StreamWriter? writer = null;
+            try
             {
-                var originalOut = Console.Out;
-                StreamWriter? writer = null;
-                try
+                if (parsed.StdoutTarget != null)
                 {
-                    if (parsed.StdoutTarget != null)
+                    writer = new StreamWriter(parsed.StdoutTarget, append: parsed.StdoutAppend)
                     {
-                        writer = new StreamWriter(parsed.StdoutTarget, append: parsed.StdoutAppend)
-                        {
-                            AutoFlush = true
-                        };
-                        Console.SetOut(writer);
-                    }
+                        AutoFlush = true
+                    };
+                    Console.SetOut(writer);
+                }
 
-                    if (parsed.StderrTarget != null)
-                    {
-                        writer = new StreamWriter(parsed.StderrTarget, append: parsed.StderrAppend)
-                        {
-                            AutoFlush = true
-                        };
-                        Console.SetError(writer);
-                    }
-                    parsed.Command.Execute(state);
-                }
-                finally
+                if (parsed.StderrTarget != null)
                 {
-                    Console.SetOut(originalOut);
-                    writer?.Dispose();
+                    writer = new StreamWriter(parsed.StderrTarget, append: parsed.StderrAppend)
+                    {
+                        AutoFlush = true
+                    };
+                    Console.SetError(writer);
                 }
+                parsed.Command.Execute(state);
+            }
+            finally
+            {
+                Console.SetOut(originalOut);
+                writer?.Dispose();
             }
         }
     }
 
-    public static void PrintPrompt()
+    private static void PrintPrompt()
     {
         Console.Write("$ ");
     }
 
-    public static ParsedCommand? GetCommand()
+    private static ParsedCommand? GetCommand()
     {
+        var buffer = new StringBuilder();
+        while (true)
+        {
+            var keyInfo  = Console.ReadKey(true);
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                Console.WriteLine();
+                break;
+            }
+            else if (keyInfo.Key == ConsoleKey.Tab)
+            {
+                var current = buffer.ToString();
+
+                if ("echo".StartsWith(current))
+                {
+                    var match = "echo"; // the one that matched
+                    var missing = match.Substring(current.Length);
+                    buffer.Append(current + missing);
+                    Console.Write(buffer.ToString());
+                }
+            }
+            else if (keyInfo.Key == ConsoleKey.Backspace && buffer.Length > 0)
+            {
+                buffer.Remove(buffer.Length - 1, 1);
+            }
+            else
+            {
+                buffer.Append(keyInfo.KeyChar);
+                Console.Write(keyInfo.KeyChar);
+            }
+        }
+        
         var line = Console.ReadLine();
 
-        if (line == null)
-        {
-            return null;
-        }
-
-        return CommandParser.ParseCommand(line);
+        return line == null ? null : CommandParser.ParseCommand(line);
     }
 }

@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using static System.IO.File;
 
 namespace CodeCrafters.Shell.Commands;
 
@@ -27,7 +28,7 @@ internal static class PathResolver
                 continue;
             }
 
-            if(File.Exists(filePath) && File.GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
+            if(Exists(filePath) && GetUnixFileMode(filePath).HasFlag(UnixFileMode.UserExecute))
             {
                 return filePath;
             }

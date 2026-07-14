@@ -4,17 +4,16 @@ namespace CodeCrafters.Shell.Commands;
 
 internal class CdCommand(string[] arg) : BuiltinCommand
 {
-    private readonly string[] _args = arg;
     public override string CommandName => "cd";
 
     public override void Execute(ShellState state)
     {
-        if (_args.Length == 0)
+        if (arg.Length == 0)
         {
             return;
         }
 
-        var target = _args[0];
+        var target = arg[0];
 
         if (target == "~")
         {

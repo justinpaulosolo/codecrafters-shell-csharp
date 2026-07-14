@@ -1,4 +1,5 @@
 using CodeCrafters.Shell.Commands;
+using CodeCrafters.Shell.parser;
 
 namespace CodeCrafters.Shell.Parser;
 

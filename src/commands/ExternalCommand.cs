@@ -10,66 +10,59 @@ internal class ExternalCommand(string name,
     bool stdoutAppend,
     bool stderrAppend) : Command
 {
-    private readonly string _name = name;
-    private readonly string[] _args = args;
-    private readonly string? _stdoutTarget = stdoutTarget;
-    private readonly string? _stderrTarget = stderrTarget;
-    private readonly bool _stdoutAppend = stdoutAppend;
-    private readonly bool _stderrAppend = stderrAppend;
-
     public override void Execute(ShellState state)
     {
-        var resolvedPath = PathResolver.Resolve(_name);
+        var resolvedPath = PathResolver.Resolve(name);
 
         if (resolvedPath != null)
         {
             var startInfo = new ProcessStartInfo()
             {
-                FileName = _name,
+                FileName = name,
                 UseShellExecute = false,
             };
 
-            if(_stdoutTarget != null)
+            if(stdoutTarget != null)
             {
                 startInfo.RedirectStandardOutput = true;
             }
 
-            if (_stderrTarget != null)
+            if (stderrTarget != null)
             {
                 startInfo.RedirectStandardError = true;
             }
 
-            foreach(var arg in _args)
+            foreach(var arg in args)
             {
                 startInfo.ArgumentList.Add(arg);
             }
 
-            using Process process = Process.Start(startInfo);
+            using var process = Process.Start(startInfo);
 
-            string? stdoutContent = _stdoutTarget != null ? process.StandardOutput.ReadToEnd() : null;
-            string? stderrContent = _stderrTarget != null ? process.StandardError.ReadToEnd() : null;
+            var stdoutContent = stdoutTarget != null ? process?.StandardOutput.ReadToEnd() : null;
+            var stderrContent = stderrTarget != null ? process?.StandardError.ReadToEnd() : null;
 
-            if(_stdoutTarget != null)
+            if(stdoutTarget != null)
             {
-                if (_stdoutAppend)
-                    File.AppendAllText(_stdoutTarget, stdoutContent);
+                if (stdoutAppend)
+                    File.AppendAllText(stdoutTarget, stdoutContent);
                 else
-                    File.WriteAllText(_stdoutTarget, stdoutContent);
+                    File.WriteAllText(stdoutTarget, stdoutContent);
             }
 
-            if(_stderrTarget != null)
+            if(stderrTarget != null)
             {
-                if (_stderrAppend)
-                    File.AppendAllText(_stderrTarget, stderrContent);
+                if (stderrAppend)
+                    File.AppendAllText(stderrTarget, stderrContent);
                 else
-                    File.WriteAllText(_stderrTarget, stderrContent);
+                    File.WriteAllText(stderrTarget, stderrContent);
             }
 
-            process.WaitForExit();
+            process?.WaitForExit();
         }
         else
         {
-            Console.WriteLine($"{_name}: command not found");
+            Console.WriteLine($"{name}: command not found");
         }
     }
 }

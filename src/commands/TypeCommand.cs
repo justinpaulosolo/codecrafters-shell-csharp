@@ -2,23 +2,17 @@ using CodeCrafters.Shell.State;
 
 namespace CodeCrafters.Shell.Commands;
 
-internal class TypeCommand : BuiltinCommand
+internal class TypeCommand(string[] args) : BuiltinCommand
 {
-    private static readonly string[] _builtinNames = { "echo", "exit", "type", "pwd", "cd" };
-    private readonly string[] _args;
-
-    public TypeCommand(string[] args)
-    {
-        _args = args;
-    }
+    private static readonly string[] BuiltinNames = ["echo", "exit", "type", "pwd", "cd"];
 
     public override string CommandName => "type";
 
     public override void Execute(ShellState state)
     {
-        var target = string.Join(' ' , _args);
+        var target = string.Join(' ' , args);
 
-        if (_builtinNames.Contains(target))
+        if (BuiltinNames.Contains(target))
         {
             Console.WriteLine($"{target} is a shell builtin");
             return;

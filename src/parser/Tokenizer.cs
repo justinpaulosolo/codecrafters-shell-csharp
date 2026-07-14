@@ -8,81 +8,73 @@ public static class Tokenizer
     {
         var tokens = new List<string>();
         var currentToken = new StringBuilder();
-        bool insideQuotes = false;
-        bool insideDoubleQuotes = false;
-        bool escapeNext = false;
+        var insideQuotes = false;
+        var insideDoubleQuotes = false;
+        var escapeNext = false;
 
-        foreach(char c in input)
+        foreach(var c in input)
         {
             if (escapeNext)
             {
                 currentToken.Append(c);
                 escapeNext = !escapeNext;
             }
-            else if (c == ' ')
+            else switch (c)
             {
-                if(insideDoubleQuotes)
-                {
+                case ' ' when insideDoubleQuotes:
+                case ' ' when insideQuotes:
                     currentToken.Append(c);
-                }
-                else if(insideQuotes)
-                {
-                    currentToken.Append(c);
-                }
-                else
+                    break;
+                case ' ':
                 {
                     if (currentToken.Length > 0)
                     {
                         tokens.Add(currentToken.ToString());
                         currentToken.Clear();
                     }
-                }
-            }
-            else if (c == '\'')
-            {
-                if (insideDoubleQuotes)
-                    currentToken.Append(c);
-                else
-                    insideQuotes = !insideQuotes;
-            }
-            else if(c == '\"')
-            {
-                if(insideQuotes)
-                {
-                    currentToken.Append(c);
-                }
-                else
-                    insideDoubleQuotes = !insideDoubleQuotes;
-            }
-            else if (c == '\\')
-            {
-                if (insideQuotes)
-                {
-                    currentToken.Append(c);
-                }
-                else
-                    escapeNext = true;
-            }
-            else if (c == '>' && !insideQuotes && !insideDoubleQuotes)
-            {
-                if (currentToken.Length > 0)
-                {
-                    tokens.Add(currentToken.ToString());
-                    currentToken.Clear();
-                }
 
-                if (tokens.Count > 0 && tokens[^1] == ">")
-                {
-                    tokens[^1] = ">>";
+                    break;
                 }
-                else
+                case '\'' when insideDoubleQuotes:
+                    currentToken.Append(c);
+                    break;
+                case '\'':
+                    insideQuotes = !insideQuotes;
+                    break;
+                case '\"' when insideQuotes:
+                    currentToken.Append(c);
+                    break;
+                case '\"':
+                    insideDoubleQuotes = !insideDoubleQuotes;
+                    break;
+                case '\\' when insideQuotes:
+                    currentToken.Append(c);
+                    break;
+                case '\\':
+                    escapeNext = true;
+                    break;
+                case '>' when !insideQuotes && !insideDoubleQuotes:
                 {
-                    tokens.Add(">");
+                    if (currentToken.Length > 0)
+                    {
+                        tokens.Add(currentToken.ToString());
+                        currentToken.Clear();
+                    }
+
+                    if (tokens.Count > 0 && tokens[^1] == ">")
+                    {
+                        tokens[^1] = ">>";
+                    }
+                    else
+                    {
+                        tokens.Add(">");
+                    }
+
+                    break;
                 }
-            }
-            else
-            {
-                currentToken.Append(c);
+                default:
+                    currentToken.Append(c);
+                    break;
             }
         }
 
