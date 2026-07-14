@@ -36,7 +36,8 @@ public static class Tokenizer
             {
                 if (insideDoubleQuotes)
                     currentToken.Append(c);
-                insideQuotes = !insideQuotes;
+                else
+                    insideQuotes = !insideQuotes;
             }
             else if(c == '\"')
             {
