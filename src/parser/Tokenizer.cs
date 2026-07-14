@@ -54,6 +54,8 @@ public static class Tokenizer
             {
                 if (!insideQuotes)
                     escapeNext = !escapeNext;
+                else
+                    escapeNext = !escapeNext;
             }
             else
             {
