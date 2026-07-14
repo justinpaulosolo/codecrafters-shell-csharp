@@ -52,12 +52,10 @@ public static class Tokenizer
             }
             else if (c == '\\')
             {
-                if (!insideQuotes)
-                    escapeNext = !escapeNext;
-                else
-                {
+                if (insideQuotes)
                     currentToken.Append(c);
-                }
+                else
+                    escapeNext = !escapeNext;
             }
             else
             {
